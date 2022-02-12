@@ -10,4 +10,18 @@
 
 * Data is stored in [here](./raw-data)
 * Data is cleaned by Python script (can be found in [here](./data_cleaning)) and cleaned data is stored in [here](./cleaned_data).
+* Visualization Code can be found in [here](./visualization).
+
+### Python Environment Setup
+
+## Install conda package command-
+
+```console
+conda env remove -n Offline1 -y
+#conda env create -f environment.yml
+conda env update --file environment.yml
+activate Offline1
+#deactivate
+```
+And then activate the `Offline1` environment for the code.
 
