@@ -1,0 +1,6 @@
+name: Offline1
+
+dependencies:
+  - python=3.6.5
+  - pip:
+    - pandas==1.1.5
