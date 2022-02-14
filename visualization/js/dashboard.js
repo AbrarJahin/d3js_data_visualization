@@ -1,53 +1,33 @@
-/* globals Chart:false, feather:false */
+//import { Data } from './singleData.js';	//Imported in HTML
 
-(function () {
-  'use strict'
+var csvLocation = "./data/processed_data.csv";
+var parseDate = d3.timeParse("%Y");
 
-  feather.replace()
-
-  // Graphs
-  var ctx = document.getElementById('myChart')
-  // eslint-disable-next-line no-unused-vars
-  var myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: [
-        'Sunday',
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday'
-      ],
-      datasets: [{
-        data: [
-          15339,
-          21345,
-          18483,
-          24003,
-          23489,
-          24092,
-          12034
-        ],
-        lineTension: 0,
-        backgroundColor: 'transparent',
-        borderColor: '#007bff',
-        borderWidth: 4,
-        pointBackgroundColor: '#007bff'
-      }]
-    },
-    options: {
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: false
-          }
-        }]
-      },
-      legend: {
-        display: false
-      }
-    }
-  })
-})()
+$(function() {
+	d3.csv(csvLocation)
+		.row(function(row){
+			// var rowElement = new Data(
+			// 	row.country,
+			// 	row.year,
+			// 	row.aid_received_per_person,
+			// 	row.average-daily-income-per-capita,
+			// 	row.gdp-total,
+			// 	row.income_per_person_gdppercapita,
+			// 	row.market-value-of-listed-companies,
+			// 	);
+			return row;
+			data = {
+				country: row.country,
+				year: parseDate(row.year),
+				prop0: row.aid_received_per_person,
+				prop1: row.average-daily-income-per-capita,
+				prop2: row.gdp-total,
+				prop3: row.income_per_person_gdppercapita,
+				prop4: row.market-value-of-listed-companies
+				};
+			return row;
+		})
+		.get(function(error, data){
+			console.log(data);
+		});
+});

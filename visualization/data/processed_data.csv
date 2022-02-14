@@ -1,4 +1,4 @@
-country,year,aid_received_per_person,average_daily_income_per_capita,gdp_total,income_per_person_gdppercapita,market_value_of_listed_companies
+country,year,aid_received_per_person,average-daily-income-per-capita,gdp-total,income_per_person_gdppercapita,market-value-of-listed-companies
 Argentina,1980,1.3,22.4,5.53,15900.0,1.77
 Argentina,1981,1.02,22.5,3.03,15200.0,1.15
 Argentina,1982,1.18,23.8,4.26,15600.0,1.33

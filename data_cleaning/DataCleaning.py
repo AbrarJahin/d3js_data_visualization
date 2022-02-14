@@ -9,11 +9,11 @@ file4 = "../raw-data/aid_received_per_person_current_us.csv"
 file5 = "../raw-data/Market-value-of-listed-companies-(%-of-GDP).csv"
 
 properties = [
-    "average-daily-income-per-capita",
+    "average_daily_income_per_capita",
     "income_per_person_gdppercapita",
-    "gdp-total",
+    "gdp_total",
     "aid_received_per_person",
-    "market-value-of-listed-companies"
+    "market_value_of_listed_companies"
     ]
 
 saveFileAddress = "../cleaned_data/processed_data.csv"
@@ -62,14 +62,14 @@ def loadFile(fileAddress, data, yearMin, yearMax):
     return data
 
 def saveFile(data, fileAddress = saveFileAddress):
-    df = pd.DataFrame()
+    df = pd.DataFrame(columns=['country','year'])
     #df = df.append({'a':1, 'b':2}, ignore_index=True)
     for country in data:
         for year in data[country]:
             a = data[country][year]
             df = df.append({
                         'country':country,
-                        'year':year,
+                        'year':int(year),
                         properties[0]:data[country][year][0],
                         properties[1]:data[country][year][1],
                         properties[2]:data[country][year][2],
