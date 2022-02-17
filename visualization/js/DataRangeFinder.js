@@ -24,6 +24,17 @@ class DataRangeFinder {
 				}
 			}
 		});
+		this.dimensions = Object.keys(data[0]).filter(function(value, index, arr){ 
+			return value != 'year' && value != 'country';
+		});
+		this.countries = Array.from(this.countries);
+		this.country_color = new Object();
+		this.countries.forEach((item, index)=>{
+			this.country_color[item] = d3.interpolate(d3.rgb(70, 130, 180), d3.rgb(169, 169, 169))((index+1)/(this.countries.length+1));
+		});
+		// Array.from(Array(this.countries.length).keys()).map((element, index) => {
+		// 	return d3.interpolate(d3.rgb(70, 130, 180), d3.rgb(169, 169, 169))((index+1)/(this.countries.length+1));
+		// });
 		this.year.min = new Date(this.year.min, 0);
 		this.year.max = new Date(this.year.max, 0);
 		return this;
