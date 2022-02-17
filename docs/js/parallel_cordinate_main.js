@@ -1,3 +1,7 @@
+//https://www.d3-graph-gallery.com/parallel.html
+
+//https://syntagmatic.github.io/parallel-coordinates/
+
 import { Data as Data} from './singleData.js';
 import { DataRangeFinder as Range} from './DataRangeFinder.js';
 import { drawParallelCordinate} from './parallelCordinate.js';
