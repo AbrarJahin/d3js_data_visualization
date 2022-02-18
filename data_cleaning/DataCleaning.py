@@ -2,11 +2,12 @@ import pandas as pd
 from collections import defaultdict
 import math
 
-file1 = "../raw-data/Average-daily-income-per-capita,-PPP(constant-2011-international-$).csv"
+file1 = "../raw-data/Average_daily_income_per_capita_PPP.csv"
 file2 = "../raw-data/income_per_person_gdppercapita_ppp_inflation_adjusted.csv"
-file3 = "../raw-data/GDP-total,-yearly-growth.csv"
+file3 = "../raw-data/GDP_total_yearly_growth.csv"
 file4 = "../raw-data/aid_received_per_person_current_us.csv"
-file5 = "../raw-data/Market-value-of-listed-companies-(%-of-GDP).csv"
+file5 = "../raw-data/Market_value_of_listed_companies_percent_of_GDP.csv"
+#Birth-rate, C02, dath rate, population, gdp
 
 properties = [
     "average_daily_income_per_capita",
@@ -20,7 +21,7 @@ saveFileAddress = "../cleaned_data/processed_data.csv"
 
 CountriesToKeep = {'Canada', 'France', 'United States', 'United Kingdom'}
 
-YearRange = [1980, 2010]
+YearRange = [1991, 2010]
 
 ########################################################################################
 def convertStrToNumber(x):
