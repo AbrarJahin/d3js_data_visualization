@@ -1,24 +1,20 @@
-// https://www.d3-graph-gallery.com/streamgraph.html
-
 // set the dimensions and margins of the graph
-var margin = {top: 20, right: 30, bottom: 30, left: 60},
-		width = 460 - margin.left - margin.right,
-		height = 400 - margin.top - margin.bottom;
+var Margin = {top: 20, right: 30, bottom: 30, left: 60},
+		Width = 460 - Margin.left - Margin.right,
+		Height = 400 - Margin.top - Margin.bottom;
 
-// append the svg object to the body of the page
-var svg = d3.select("#streamgraph")
-	.append("svg")
-		.attr("width", width + margin.left + margin.right)
-		.attr("height", height + margin.top + margin.bottom)
-	.append("g")
-		.attr("transform",
-					"translate(" + margin.left + "," + margin.top + ")");
-
-// Parse the Data
-d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/5_OneCatSevNumOrdered_wide.csv", function(data) {
+function drawStreamgraph(ranges, data, propertyName, svgSelector, width = Width, height = Height, margin = Margin) {
+	// append the svg object to the body of the page
+	var svg = d3.select(svgSelector)
+		.append("svg")
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.bottom)
+		.append("g")
+			.attr("transform",
+						"translate(" + margin.left + "," + margin.top + ")");
 
 	// List of groups = header of the csv files
-	var keys = data.columns.slice(1);
+	var keys = Object.keys(data[0]).slice(1);	//var keys = data.columns.slice(1);
 
 	// Add X axis
 	var x = d3.scaleLinear()
@@ -58,4 +54,6 @@ d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_data
 				.y0(function(d) { return y(d[0]); })
 				.y1(function(d) { return y(d[1]); })
 		);
-});
+}
+
+export { drawStreamgraph };

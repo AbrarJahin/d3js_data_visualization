@@ -1,12 +1,10 @@
-// https://www.d3-graph-gallery.com/graph/parallel_custom.html
-// Color Red to blue
-
-//https://www.d3-graph-gallery.com/parallel.html
-//https://syntagmatic.github.io/parallel-coordinates/
+// https://www.d3-graph-gallery.com/graph/stackedarea_template.html
 
 import { Data as Data} from './singleData.js';
 import { DataRangeFinder as Range} from './DataRangeFinder.js';
 import { drawParallelCordinate} from './parallelCordinate.js';
+import { drawStreamgraph} from './streamgraph.js';
+import { StreamgraphData} from './streamgraphData.js';
 
 var csvLocation = "https://raw.githubusercontent.com/AbrarJahin/d3js_data_visualization/master/cleaned_data/processed_data.csv";
 
@@ -14,7 +12,7 @@ var csvLocation = "https://raw.githubusercontent.com/AbrarJahin/d3js_data_visual
 	// your page initialization code here
 	// the DOM will be available here
 	d3.csv(csvLocation)
-		.row(function(row){
+		.row(function(row) {
 			return new Data(row);
 		})
 		.get(function(error, data) {
@@ -25,6 +23,10 @@ var csvLocation = "https://raw.githubusercontent.com/AbrarJahin/d3js_data_visual
 			}
 			var ranges = new Range(data);
 			// Draw Parallel Cordinate
-			drawParallelCordinate(ranges, data, '#parallel_cordinates');
+			var propertiesToSelect = data.columns.filter(name => name!='country' && name!='year');
+			//PropertyName should come from dropdown selector
+			var propertyName = propertiesToSelect[Math.floor(Math.random() * propertiesToSelect.length)];
+			var streamgraphData = new StreamgraphData(data, propertyName);
+			drawStreamgraph(ranges[propertyName], streamgraphData, propertyName,'#streamgraph');
 		});
  })();

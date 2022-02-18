@@ -15,7 +15,7 @@ properties = [
     "gdp_total",
     "aid_received_per_person",
     "market_value_of_listed_companies"
-    ]
+]
 
 saveFileAddress = "../cleaned_data/processed_data.csv"
 
