@@ -1,29 +1,32 @@
 import pandas as pd
 from collections import defaultdict
 import math
+import os
 
-file1 = "../raw-data/Average_daily_income_per_capita_PPP.csv"
-file2 = "../raw-data/income_per_person_gdppercapita_ppp_inflation_adjusted.csv"
-file3 = "../raw-data/GDP_total_yearly_growth.csv"
-file4 = "../raw-data/aid_received_per_person_current_us.csv"
-file5 = "../raw-data/Market_value_of_listed_companies_percent_of_GDP.csv"
-#Birth-rate, C02, dath rate, population, gdp
-
-properties = [
-    "average_daily_income_per_capita",
-    "income_per_person_gdppercapita",
-    "gdp_total",
-    "aid_received_per_person",
-    "market_value_of_listed_companies"
-]
+path ="../raw-data"
 
 saveFileAddress = "../cleaned_data/processed_data.csv"
 
-CountriesToKeep = {'Canada', 'France', 'United States', 'United Kingdom'}
+#CountriesToKeep = {'Canada', 'France', 'United States', 'United Kingdom'}
 
 YearRange = [1991, 2010]
 
 ########################################################################################
+def getFileAndProperties(folderPath):
+    #we shall store all the file names in this list
+    filelist = []
+    for root, dirs, files in os.walk(folderPath):
+        for file in files:
+            #append the file name to the list
+            filelist.append(os.path.join(root,file))
+    return filelist
+
+def getPropertyFromFilePath(filePath):
+    baseFileName = os.path.basename(filePath)
+    fileName = os.path.splitext(baseFileName)[0]
+    propertyName = ''.join(ch.lower() if ch not in [" ", '_', '-'] else '_' for ch in fileName if ch.isalnum() or ch in [" ", '_', '-'])
+    return propertyName
+
 def convertStrToNumber(x):
     total_stars = 0
     num_map = {'K':1000, 'M':1000000, 'B':1000000000}
@@ -62,21 +65,20 @@ def loadFile(fileAddress, data, yearMin, yearMax):
             print("Parse file error : ", err)
     return data
 
-def saveFile(data, fileAddress = saveFileAddress):
+def saveFile(data, propertyList, fileAddress = saveFileAddress):
     df = pd.DataFrame(columns=['country','year'])
-    #df = df.append({'a':1, 'b':2}, ignore_index=True)
     for country in data:
         for year in data[country]:
-            a = data[country][year]
-            df = df.append({
+            dictonaryData = {
                         'country':country,
-                        'year':int(year),
-                        properties[0]:data[country][year][0],
-                        properties[1]:data[country][year][1],
-                        properties[2]:data[country][year][2],
-                        properties[3]:data[country][year][3],
-                        properties[4]:data[country][year][4]
-                     }, ignore_index=True)
+                        'year':int(year)
+                     }
+            for index, property in enumerate(propertyList):
+                try:
+                    dictonaryData[property] = data[country][year][index]
+                except Exception as OutOfIndexError:
+                    print(OutOfIndexError, country, year)
+            df = df.append(dictonaryData, ignore_index=True)
     df.to_csv (fileAddress, index = None, header=True)
     print("File Save Completed")
 
@@ -95,12 +97,15 @@ def filterData(dictionary, minNoOfProperty = 5):
             #print(key)
     return data
 
-data = defaultdict(str)
-data = loadFile(file1, data, YearRange[0], YearRange[1])
-data = loadFile(file2, data, YearRange[0], YearRange[1])
-data = loadFile(file3, data, YearRange[0], YearRange[1])
-data = loadFile(file4, data, YearRange[0], YearRange[1])
-data = loadFile(file5, data, YearRange[0], YearRange[1])
-data = filterData(data,5)
+def getDataFromFolderPath(folderPath):
+    filePathList = getFileAndProperties(folderPath)
+    propertyList = []
+    data = defaultdict(str)
+    for filePath in filePathList:
+        propertyName = getPropertyFromFilePath(filePath)
+        data = loadFile(filePath, data, YearRange[0], YearRange[1])
+        propertyList.append(propertyName)
+    return data, propertyList
 
-saveFile(data)
+data, propertyList = getDataFromFolderPath(path)
+saveFile(data, propertyList)
