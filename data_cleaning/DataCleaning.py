@@ -67,6 +67,7 @@ def loadFile(fileAddress, data, yearMin, yearMax):
 
 def saveFile(data, propertyList, fileAddress = saveFileAddress):
     df = pd.DataFrame(columns=['country','year'])
+    error = defaultdict(dict)
     for country in data:
         for year in data[country]:
             dictonaryData = {
@@ -77,10 +78,11 @@ def saveFile(data, propertyList, fileAddress = saveFileAddress):
                 try:
                     dictonaryData[property] = data[country][year][index]
                 except Exception as OutOfIndexError:
-                    print(OutOfIndexError, country, year)
+                    error[property][year] = country
             df = df.append(dictonaryData, ignore_index=True)
     df.to_csv (fileAddress, index = None, header=True)
-    print("File Save Completed")
+    print("File Save Completed with This errors-")
+    print(dict(error))
 
 def checkIfEachElementOk(dictionary, minNoOfProperty):
     keys = dictionary.keys()
@@ -94,7 +96,6 @@ def filterData(dictionary, minNoOfProperty = 5):
     for key in keys:
         if not checkIfEachElementOk(dictionary[key], minNoOfProperty):
             del dictionary[key]
-            #print(key)
     return data
 
 def getDataFromFolderPath(folderPath):
@@ -108,4 +109,5 @@ def getDataFromFolderPath(folderPath):
     return data, propertyList
 
 data, propertyList = getDataFromFolderPath(path)
+data = filterData(data, 5)
 saveFile(data, propertyList)
