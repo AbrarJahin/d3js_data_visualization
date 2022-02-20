@@ -7,8 +7,6 @@ path ="../raw-data"
 
 saveFileAddress = "../cleaned_data/processed_data.csv"
 
-#CountriesToKeep = {'Canada', 'France', 'United States', 'United Kingdom'}
-
 YearRange = [1991, 2010]
 
 ########################################################################################
@@ -46,8 +44,6 @@ def getFloatValue(floatString):
 def loadFile(fileAddress, data, yearMin, yearMax):
     rawDataFrame = pd.read_csv(fileAddress, index_col=0, encoding= 'unicode_escape')
     for countryName, row in rawDataFrame.iterrows():
-        #if countryName not in CountriesToKeep:  #Skip other countries
-        #    continue
         try:
             if countryName not in data: data[countryName] = defaultdict(list)
             columnList = [int(i) for i in rawDataFrame.columns.to_list()]
@@ -91,9 +87,12 @@ def checkIfEachElementOk(dictionary, minNoOfProperty):
             return False
     return True
 
-def filterData(dictionary, minNoOfProperty = 5):
+def filterData(dictionary, minNoOfProperty = 5, maxCountryCountToKeep = 200):
     keys = list(dictionary.keys())
     for key in keys:
+        if not checkIfEachElementOk(dictionary[key], minNoOfProperty):
+            del dictionary[key]
+    for key in list(dictionary.keys())[:maxCountryCountToKeep]:
         if not checkIfEachElementOk(dictionary[key], minNoOfProperty):
             del dictionary[key]
     return data
@@ -109,5 +108,5 @@ def getDataFromFolderPath(folderPath):
     return data, propertyList
 
 data, propertyList = getDataFromFolderPath(path)
-data = filterData(data, 5)
+data = filterData(data, 5, 25)
 saveFile(data, propertyList)
