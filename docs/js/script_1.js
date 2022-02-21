@@ -1,11 +1,7 @@
 import { Data as Data } from './Data/singleData.js';
 import { DataRangeFinder as Range } from './Data/DataRangeFinder.js';
-
 import { drawBarChartFromData as BarChart } from './GroupedBarChart/groupedBarChart.js';
 import { getGroupedBarChartData as BarChartData } from './GroupedBarChart/getGroupedBarChartData.js';
-
-import { drawStackedAreaChart as StackedAreaChart } from './StackedAreaChart/stackedAreaChart.js';
-import { StackedAreaData as StackedAreaData } from './StackedAreaChart/stackedAreaData.js';
 
 // import { drawParallelCordinate} from './parallelCordinate.js';
 // import { drawStreamgraph} from './streamgraph.js';
@@ -38,13 +34,13 @@ function populateDropdownElements(params) {
 			//Grouped Bar Chart
 			try {
 				//////////////////////////////==============================Grouped Bar Chart=====================================Start
-				var barChartData = BarChartData(downloadedData, dataRange, dataRange.dimensions[0]);
-				BarChart(barChartData, dataRange.dimensions[0], "#grouped_bar_chart");
+				var barChartData = BarChartData(downloadedData, dataRange, "income_per_person_gdppercapita_ppp_inflation_adjusted");
+				BarChart(barChartData, "income_per_person_gdppercapita_ppp_inflation_adjusted", "#grouped_bar_chart");
 				//Populate Features in dropdown
 				$('#barChartProperty').empty();
 				dataRange.dimensions.forEach((item, index)=>{
-					$("#barChartProperty").append($("<option/>").val(item).text(item));
-				});
+					$("#barChartProperty").append($("<option />").val(item).text(item));
+				})
 				//Dropdown OnChange
 				$('#barChartProperty').on('change', function() {
 					var barChartData = BarChartData(downloadedData, dataRange, this.value);
@@ -53,23 +49,24 @@ function populateDropdownElements(params) {
 				//////////////////////////////==============================Grouped Bar Chart=====================================End
 			}
 			catch(err) {
-				console.warn("Bar Chart Failed", err);
+				console.error("Bar Chart Failed", err);
 			}
 
 			//Stacked Area Chart
 			try {
-				var stackedAreaData = new StackedAreaData(downloadedData, dataRange.dimensions[0]);
-				StackedAreaChart(stackedAreaData, "#stacked_area_chart", dataRange.dimensions[0]);
-				//Populate Features in dropdown
-				$('#stackedAreaChartProperty').empty();
-				dataRange.dimensions.forEach((item, index)=> {
-					$("#stackedAreaChartProperty").append($("<option/>").val(item).text(item));
-				});
-				//Dropdown OnChange
-				$('#stackedAreaChartProperty').on('change', function() {
-					var stackedAreaData = new StackedAreaData(downloadedData, this.value);
-					StackedAreaChart(stackedAreaData, "#stacked_area_chart", this.value);
-				});
+				//////////////////////////////==============================Grouped Bar Chart=====================================Start
+				// var barChartData = BarChartData(downloadedData, dataRange, "income_per_person_gdppercapita_ppp_inflation_adjusted");
+				// BarChart(barChartData, "income_per_person_gdppercapita_ppp_inflation_adjusted", "#grouped_bar_chart");
+				// //Populate Features in dropdown
+				// $('#barChartProperty').empty();
+				// dataRange.dimensions.forEach((item, index)=>{
+				// 	$("#barChartProperty").append($("<option />").val(item).text(item));
+				// })
+				// //Dropdown OnChange
+				// $('#barChartProperty').on('change', function() {
+				// 	var barChartData = BarChartData(downloadedData, dataRange, this.value);
+				// 	BarChart(barChartData, this.value, "#grouped_bar_chart");
+				// });
 				//////////////////////////////==============================Grouped Bar Chart=====================================End
 			}
 			catch(err) {

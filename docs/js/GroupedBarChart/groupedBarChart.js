@@ -16,7 +16,7 @@ function rgbToHex(color) {
 function getYearsFromData(data) {
     var yearArray = [];
     Object.keys(data[0]).forEach((item, index)=>{
-        if(item!='country')
+        if(!["country", "year"].includes(item))
             yearArray.push(item);
     });
     yearArray.sort();
@@ -48,7 +48,7 @@ function drawBarChartFromData(data, propertyName, htmlSelector = svgSelector, de
     var svg = d3.select(htmlSelector).append("svg")
             .attr("width", defaultWidth)
             .attr("height", defaultHeight);
-    var margin = {top: 20, right: 20, bottom: 30, left: 40},
+    var margin = {top: 20, right: 35, bottom: 30, left: 40},
         width = +svg.attr("width") - margin.left - margin.right,
         height = +svg.attr("height") - margin.top - margin.bottom,
         g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -130,6 +130,7 @@ function drawBarChartFromData(data, propertyName, htmlSelector = svgSelector, de
             .attr("text-anchor", "start")
             .text(propertyName);
 
+    ///Legends=============================================
     var legend = g.append("g")
         .attr("font-family", "sans-serif")
         .attr("font-size", 10)
@@ -138,7 +139,7 @@ function drawBarChartFromData(data, propertyName, htmlSelector = svgSelector, de
         .data(categories.slice().reverse())
         .enter().append("g")
             .attr("transform", function(d, i) {
-                return "translate(0," + i * 20 + ")";
+                return "translate(45," + i * 15 + ")";
             });
 
     legend.append("rect")
