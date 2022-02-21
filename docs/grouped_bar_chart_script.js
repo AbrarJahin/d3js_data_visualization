@@ -47,23 +47,46 @@ function drawBarChartFromData(data, htmlSelector = svgSelector, defaultWidth = d
     /////////////////////////////////////////////////////////////////////////////////////////////
     var categories = data.columns.slice(1);
 
-    x0.domain(data.map(function(d) { return d.State; }));
+    x0.domain(data.map(function(d) {
+        return d.State;
+    }));
     x1.domain(categories).rangeRound([0, x0.bandwidth()]);
-    y.domain([0, d3.max(data, function(d) { return d3.max(categories, function(key) { return d[key]; }); })]).nice();
+    y.domain([0, d3.max(data, function(d) {
+        return d3.max(categories, function(key) {
+            return d[key];
+        });
+    })]).nice();
 
     g.append("g")
         .selectAll("g")
         .data(data)
         .enter().append("g")
-            .attr("transform", function(d) { return "translate(" + x0(d.State) + ",0)"; })
+            .attr("transform", function(row) {
+                return "translate(" + x0(row.State) + ",0)";
+            })
         .selectAll("rect")
-        .data(function(d) { return categories.map(function(key) { return {key: key, value: d[key]}; }); })
+        .data(function(row) {
+            return categories.map(function(key) {
+                return {
+                    key: key,
+                    value: row[key]
+                };
+            });
+        })
         .enter().append("rect")
-            .attr("x", function(d) { return x1(d.key); })
-            .attr("y", function(d) { return y(d.value); })
+            .attr("x", function(kvPair) {
+                return x1(kvPair.key);
+            })
+            .attr("y", function(kvPair) {
+                return y(kvPair.value);
+            })
             .attr("width", x1.bandwidth())
-            .attr("height", function(d) { return height - y(d.value); })
-            .attr("fill", function(d) { return zColorScale(d.key); });
+            .attr("height", function(kvPair) {
+                return height - y(kvPair.value);
+            })
+            .attr("fill", function(kvPair) {
+                return zColorScale(kvPair.key);
+            });
 
     g.append("g")
         .attr("class", "axis")
@@ -89,7 +112,9 @@ function drawBarChartFromData(data, htmlSelector = svgSelector, defaultWidth = d
         .selectAll("g")
         .data(categories.slice().reverse())
         .enter().append("g")
-            .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+            .attr("transform", function(categoryName, categoryIndex) {
+                return "translate(0," + categoryIndex * 15 + ")";   //Height of lavels
+            });
 
     legend.append("rect")
         .attr("x", width - 19)
@@ -101,7 +126,9 @@ function drawBarChartFromData(data, htmlSelector = svgSelector, defaultWidth = d
         .attr("x", width - 24)
         .attr("y", 9.5)
         .attr("dy", "0.32em")
-        .text(function(d) { return d; });
+        .text(function(categoryName) {
+            return categoryName;
+        });
 }
 
 d3.csv("data.csv", function(d, i, columns) {
@@ -110,7 +137,6 @@ d3.csv("data.csv", function(d, i, columns) {
 }, function(error, data)
 {
     if (error) throw error;
-
     drawBarChartFromData(data, htmlSelector = svgSelector);
 });
 
