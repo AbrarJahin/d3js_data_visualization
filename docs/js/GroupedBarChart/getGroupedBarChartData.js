@@ -1,9 +1,4 @@
 function getCountryIndex(data, countryName) {
-	// var foundIndex = -1;
-    // data.forEach((item, index)=> {
-	// 	if(item.country == countryName)
-	// 		return index;
-	// });
 	for (const [index, item] of data.entries()) {
 		if(item.country == countryName) return index;
 	}
@@ -13,10 +8,10 @@ function getCountryIndex(data, countryName) {
 function getGroupedBarChartData(data, dataRange, propertyName) {
     var output = [];
 	for (const [index, country] of dataRange.countries.entries()) {
-		var tempData = {};
-		tempData['country'] = country;
+		var tempData = new Object();
+		tempData.country = country;
 		for (let year = dataRange.year.min.getFullYear(); year < dataRange.year.max.getFullYear()+1; year++) {
-			tempData[year] = 0;
+			tempData.year = 0;
 		}
 		output.push(tempData);
 	}
@@ -27,6 +22,7 @@ function getGroupedBarChartData(data, dataRange, propertyName) {
 		}
 		output[valIndex][item.year] = item[propertyName];
 	});
+	output.sort(x => x['country']);
 	return output;
 }
 

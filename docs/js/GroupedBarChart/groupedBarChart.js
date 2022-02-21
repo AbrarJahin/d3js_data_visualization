@@ -6,22 +6,30 @@ var default_height = 500;
 
 function clearDiv(elementSelector) {
     d3.selectAll(elementSelector + ' svg').remove();
-    // try {
-    //     document.getElementById(elementSelector).innerHTML = "";
-    //     // var div = document.getElementById(elementID);      
-    //     // while(div.firstChild) {
-    //     //     div.removeChild(div.firstChild);
-    //     // }
-    // }
-    // catch(err) {
-    //     console.log(err);
-    //     // if any error, Code throws the error
-    // }
 }
 
 function rgbToHex(color) {
     var r = color.r, g = color.g, b = color.b;
     return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+}
+
+function getYearsFromData(data) {
+    var yearArray = [];
+    Object.keys(data[0]).forEach((item, index)=>{
+        if(item!='country')
+            yearArray.push(item);
+    });
+    yearArray.sort();
+    return yearArray;
+}
+
+function getCountriesFromData(data) {
+    var countryArray = [];
+    data.forEach((item, index)=>{
+        countryArray.push(item['country'])
+    });
+    countryArray.sort();
+    return countryArray;
 }
 
 function getColorArray(noOfElement = 20) {
@@ -56,30 +64,54 @@ function drawBarChartFromData(data, propertyName, htmlSelector = svgSelector, de
         .rangeRound([height, 0]);
 
     /////////////////////////////////////////////////////////////////////////////////////////////
-    var colorArray = ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"];
-    var colorArray = getColorArray(colorArray.length);
+    //var colorArray = ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"];
+    var categories = getYearsFromData(data);
+    var countryList = getCountriesFromData(data);
+    var colorArray = getColorArray(categories.length);//==================================================
     var zColorScale = d3.scaleOrdinal()
         .range(colorArray);
     /////////////////////////////////////////////////////////////////////////////////////////////
-    var categories = data.columns.slice(1);
+    //var categories = data.columns.slice(1);
+    var categories = getYearsFromData(data);
 
-    x0.domain(data.map(function(d) { return d.State; }));
+    x0.domain(data.map(function(d) {
+        return d['country'];
+    }));
     x1.domain(categories).rangeRound([0, x0.bandwidth()]);
-    y.domain([0, d3.max(data, function(d) { return d3.max(categories, function(key) { return d[key]; }); })]).nice();
+    y.domain([0, d3.max(data, function(d) {
+        return d3.max(categories, function(key) { return d[key]; });
+    })]).nice();
 
     g.append("g")
         .selectAll("g")
         .data(data)
         .enter().append("g")
-            .attr("transform", function(d) { return "translate(" + x0(d.State) + ",0)"; })
+            .attr("transform", function(d) {
+                return "translate(" + x0(d['country']) + ",0)";
+            })
         .selectAll("rect")
-        .data(function(d) { return categories.map(function(key) { return {key: key, value: d[key]}; }); })
+        .data(function(d) {
+            return categories.map(function(key) {
+                return {
+                    key: key,
+                    value: d[key]
+                };
+            });
+        })
         .enter().append("rect")
-            .attr("x", function(d) { return x1(d.key); })
-            .attr("y", function(d) { return y(d.value); })
+            .attr("x", function(d) {
+                return x1(d.key);
+            })
+            .attr("y", function(d) {
+                return y(d.value);
+            })
             .attr("width", x1.bandwidth())
-            .attr("height", function(d) { return height - y(d.value); })
-            .attr("fill", function(d) { return zColorScale(d.key); });
+            .attr("height", function(d) {
+                return height - y(d.value);
+            })
+            .attr("fill", function(d) {
+                return zColorScale(d.key);
+            });
 
     g.append("g")
         .attr("class", "axis")
@@ -105,7 +137,9 @@ function drawBarChartFromData(data, propertyName, htmlSelector = svgSelector, de
         .selectAll("g")
         .data(categories.slice().reverse())
         .enter().append("g")
-            .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+            .attr("transform", function(d, i) {
+                return "translate(0," + i * 20 + ")";
+            });
 
     legend.append("rect")
         .attr("x", width - 19)
@@ -117,7 +151,9 @@ function drawBarChartFromData(data, propertyName, htmlSelector = svgSelector, de
         .attr("x", width - 24)
         .attr("y", 9.5)
         .attr("dy", "0.32em")
-        .text(function(d) { return d; });
+        .text(function(d) {
+            return d;
+        });
 }
 
 //Export Function

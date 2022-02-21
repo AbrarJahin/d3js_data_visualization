@@ -41,10 +41,10 @@ d3.csv("data.csv", function(d, i, columns) {
 			dataRange = new Range(data);
 
 			var temp = BarChartData(downloadedData, dataRange, "income_per_person_gdppercapita_ppp_inflation_adjusted");
-			BarChart(oldData, "1", "#grouped_bar_chart");
+			BarChart(temp, "income_per_person_gdppercapita_ppp_inflation_adjusted", "#grouped_bar_chart");
 			console.log(`downloadedData`);
-			
-			////////////////////////////////
+
+			////////////////////////////////=============================================================================
 			//Populate values in dropdown
 			$('#barChartProperty').empty();
 			dataRange.dimensions.forEach((item, index)=>{
@@ -53,9 +53,10 @@ d3.csv("data.csv", function(d, i, columns) {
 			//Dropdown OnChange
 			$('#barChartProperty').on('change', function() {
 				var temp = BarChartData(downloadedData, dataRange, this.value);
-				BarChart(oldData, this.value, "#grouped_bar_chart");
+				BarChart(temp, this.value, "#grouped_bar_chart");
 				console.log(temp);
 			});
+			////////////////////////////////=============================================================================
 		});
 
 		// setTimeout(function(){
@@ -65,7 +66,3 @@ d3.csv("data.csv", function(d, i, columns) {
 		// }, 2000);//wait 2 seconds
 
 })();
-
-// setTimeout(function(){
-// 	BarChart(oldData, "2", "#grouped_bar_chart");
-// }, 10000);
