@@ -210,7 +210,7 @@ function drawStackedAreaChart(data,
 		d3.selectAll(".myArea").style("opacity", .1);	// reduce opacity of all groups
 		//d3.select("."+countryName).style("opacity", 1);
 		d3.selectAll("."+countryName).style("opacity", 1);	// expect the one that is hovered
-		console.log(countryName);
+		//console.log(countryName);
 	}
 
 	// And when it is not hovered anymore

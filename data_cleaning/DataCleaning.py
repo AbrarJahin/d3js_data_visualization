@@ -92,7 +92,8 @@ def filterData(dictionary, minNoOfProperty = 5, maxCountryCountToKeep = 200):
     for key in keys:
         if not checkIfEachElementOk(dictionary[key], minNoOfProperty):
             del dictionary[key]
-    for key in list(dictionary.keys())[:maxCountryCountToKeep]:
+    countryList = list(dictionary.keys())
+    for key in countryList[:maxCountryCountToKeep]:
         if not checkIfEachElementOk(dictionary[key], minNoOfProperty):
             del dictionary[key]
     return data
@@ -108,5 +109,5 @@ def getDataFromFolderPath(folderPath):
     return data, propertyList
 
 data, propertyList = getDataFromFolderPath(path)
-data = filterData(data, 5, 25)
+data = filterData(data, 5, 200)
 saveFile(data, propertyList)
