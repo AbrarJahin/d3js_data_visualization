@@ -1,5 +1,5 @@
-var defaultWidth = 660;
-var defaultHeight = 400;
+var defaultWidth = 960;
+var defaultHeight = 500;
 var defaultHtmlSelector = "#stacked_area_chart";
 
 ////////////////////////////////////////////////////////////////////////

@@ -1,5 +1,5 @@
-var default_width = 460;
-var default_height = 400;
+var default_width = 960;
+var default_height = 500;
 var default_html_selector = "#parallel_coordinates_chart";
 
 function clearDiv(elementSelector) {

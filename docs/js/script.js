@@ -27,7 +27,6 @@ function populateDropdownElements(params) {
 		.get(function(error, data) {
 			if(error!=null) {
 				console.error(error);
-				//return;
 				throw error;
 			}
 			//Data Processing
