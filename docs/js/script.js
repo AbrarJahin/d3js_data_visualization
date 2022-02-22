@@ -45,7 +45,7 @@ function populateDropdownElements(params) {
 				});
 				//Dropdown OnChange
 				$('#barChartProperty').on('change', function() {
-					var barChartData = BarChartData(downloadedData, dataRange, this.value);
+					var barChartData = BarChartData(downloadedData, dataRange, this.value, $('#max_no_of_country').val());
 					BarChart(barChartData, this.value, "#grouped_bar_chart");
 				});
 				//////////////////////////////==============================Grouped Bar Chart=====================================End
