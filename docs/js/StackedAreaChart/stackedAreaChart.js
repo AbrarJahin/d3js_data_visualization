@@ -58,9 +58,10 @@ function drawStackedAreaChart(data,
 			chartHeight = defaultHeight) {
 	clearDiv(htmlSelector);	//Clear the SVG
 	// set the dimensions and margins of the graph
-	var margin = {top: 60, right: 230, bottom: 50, left: 50},
+	var margin = {top: 60, right: 100, bottom: 50, left: 50},
 	width = chartWidth - margin.left - margin.right,
 	height = chartHeight - margin.top - margin.bottom;
+	var legendStartPosition = chartWidth-margin.right-30;
 
 	// append the svg object to the body of the page
 	var svg = d3.select(htmlSelector)
@@ -93,7 +94,9 @@ function drawStackedAreaChart(data,
 
 	// Add X axis
 	var x = d3.scaleLinear()
-		.domain(d3.extent(data, function(d) { return d.year; }))
+		.domain(d3.extent(data, function(singleData) {
+			return singleData.year;
+		}))
 		.range([ 0, width ]);
 	var xAxis = svg.append("g")
 		.attr("transform", "translate(0," + height + ")")
@@ -144,9 +147,15 @@ function drawStackedAreaChart(data,
 
 	// Area generator
 	var area = d3.area()
-		.x(function(d) { return x(d.data.year); })
-		.y0(function(d) { return y(d[0]); })
-		.y1(function(d) { return y(d[1]); });
+		.x(function(d) {
+			return x(d.data.year);
+		})
+		.y0(function(d) {
+			return y(d[0]);
+		})
+		.y1(function(d) {
+			return y(d[1]);
+		});
 
 	// Show the areas
 	areaChart
@@ -171,8 +180,7 @@ function drawStackedAreaChart(data,
 
 	// A function that update the chart for given boundaries
 	function updateChart() {
-
-		extent = d3.event.selection;
+		var extent = d3.event.selection;
 
 		// If no selection, back to initial coordinate. Otherwise, update X axis domain
 		if(!extent) {
@@ -206,7 +214,7 @@ function drawStackedAreaChart(data,
 	}
 
 	// And when it is not hovered anymore
-	var noHighlight = function(d){
+	var noHighlight = function(countryName){
 		d3.selectAll(".myArea").style("opacity", 1);
 	}
 
@@ -215,17 +223,17 @@ function drawStackedAreaChart(data,
 	//////////
 
 	// Add one dot in the legend for each name.
-	var size = 20;
+	var legendRectangleSize = 10;
 	svg.selectAll("myrect")
 		.data(categoryList)
 		.enter()
 		.append("rect")
-			.attr("x", 400)
-			.attr("y", function(d,i){
-				return 10 + i*(size+5);
+			.attr("x", legendStartPosition)
+			.attr("y", function(countryName, index) {
+				return 10 + index*(legendRectangleSize+5);
 			}) // 100 is where the first dot appears. 25 is the distance between dots
-			.attr("width", size)
-			.attr("height", size)
+			.attr("width", legendRectangleSize)
+			.attr("height", legendRectangleSize)
 			.style("fill", function(d){
 				return color(d);
 			})
@@ -237,8 +245,8 @@ function drawStackedAreaChart(data,
 		.data(categoryList)
 		.enter()
 		.append("text")
-			.attr("x", 400 + size*1.2)
-			.attr("y", function(d,i){ return 10 + i*(size+5) + (size/2)}) // 100 is where the first dot appears. 25 is the distance between dots
+			.attr("x", legendStartPosition + legendRectangleSize*1.2)
+			.attr("y", function(d,i){ return 10 + i*(legendRectangleSize+5) + (legendRectangleSize/2)}) // 100 is where the first dot appears. 25 is the distance between dots
 			.style("fill", function(d){ return color(d)})
 			.text(function(d){ return d})
 			.attr("text-anchor", "left")
