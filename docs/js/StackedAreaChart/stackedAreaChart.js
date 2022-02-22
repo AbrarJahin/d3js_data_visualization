@@ -44,7 +44,7 @@ function getMaxStackedValue(data) {
 	});
 	var maxVal = 0;
 	for (const [key, value] of Object.entries(stackedDataDictonary)) {
-		console.log(key, value);
+		//console.log(key, value);
 		maxVal = Math.max(maxVal,value);
 	}
 	return maxVal;

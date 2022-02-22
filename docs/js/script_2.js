@@ -7,8 +7,9 @@ import { getGroupedBarChartData as BarChartData } from './GroupedBarChart/getGro
 import { drawStackedAreaChart as StackedAreaChart } from './StackedAreaChart/stackedAreaChart.js';
 import { StackedAreaData as StackedAreaData } from './StackedAreaChart/stackedAreaData.js';
 
-import { drawParallelCoordinates as ParallelCoordinates } from './ParallelCoordinates/parallelCoordinates.js';
-import { getParallelCoordinatesData as ParallelCoordinatesData } from './ParallelCoordinates/getparallelCoordinatesData.js';
+// import { drawParallelCordinate} from './parallelCordinate.js';
+// import { drawStreamgraph} from './streamgraph.js';
+// import { StreamgraphData} from './streamgraphData.js';
 
 var csvLocation = "https://raw.githubusercontent.com/AbrarJahin/d3js_data_visualization/master/cleaned_data/processed_data.csv";
 var downloadedData = null;
@@ -69,30 +70,11 @@ function populateDropdownElements(params) {
 					var stackedAreaData = new StackedAreaData(downloadedData, this.value);
 					StackedAreaChart(stackedAreaData, "#stacked_area_chart", this.value);
 				});
+				//////////////////////////////==============================Grouped Bar Chart=====================================End
 			}
 			catch(err) {
-				console.warn("Stacked Area Chart Failed", err);
+				console.error("Stacked Area Chart Failed", err);
 			}
 
-			//Parallel coordinates
-			try {
-				var parallelCoordinatesData = new ParallelCoordinatesData(downloadedData, dataRange.year.min.getFullYear());
-				ParallelCoordinates(parallelCoordinatesData, "#parallel_coordinates_chart", 'country');
-
-				//Populate Features in slider
-				$('#parallel_coordinates_year').val(dataRange.year.min.getFullYear());
-				$('#parallel_coordinates_year').attr('min', dataRange.year.min.getFullYear());
-				$('#parallel_coordinates_year').attr('max', dataRange.year.max.getFullYear());
-				$('#parallel_coordinates_year_data').text(dataRange.year.min.getFullYear());
-				//Dropdown OnChange
-				$('#parallel_coordinates_year').on('change', function() {
-					$('#parallel_coordinates_year_data').text(this.value);	//Update text
-					var parallelCoordinatesData = new ParallelCoordinatesData(downloadedData, this.value);
-					ParallelCoordinates(parallelCoordinatesData, "#parallel_coordinates_chart", 'country');
-				});
-			}
-			catch(err) {
-				console.warn("Parallel Coordinates Chart Failed", err);
-			}
 		});
 })();
