@@ -119,7 +119,19 @@ body {
 
 
 /* Grouped Bar Chart - Start */
-.axis .domain {
+.grouped_bar_chart
+	.axis .domain {
 	display: none;
 }
 /* Grouped Bar Chart -   End */
+
+
+/* Parallel Coordinates - Start */
+.parallel_coordinate .axis {
+	opacity: 0.4;
+}
+
+.parallel_coordinate .axis:hover {
+	opacity: 1;
+}
+/* Parallel Coordinates -   End */

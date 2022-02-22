@@ -175,11 +175,11 @@ function drawStackedAreaChart(data,
 		extent = d3.event.selection;
 
 		// If no selection, back to initial coordinate. Otherwise, update X axis domain
-		if(!extent){
+		if(!extent) {
 			if (!idleTimeout) return idleTimeout = setTimeout(idled, 350); // This allows to wait a little bit
-			x.domain(d3.extent(data, function(d) {
-				return d.year;
-			}))
+			x.domain(d3.extent(data, function(singleData) {
+				return singleData.year;
+			}));
 		} else {
 			x.domain([ x.invert(extent[0]), x.invert(extent[1]) ]);
 			areaChart.select(".brush").call(brush.move, null); // This remove the grey brush area as soon as the selection has been done
@@ -198,12 +198,11 @@ function drawStackedAreaChart(data,
 	//////////
 
 	// What to do when one group is hovered
-	var highlight = function(d) {
-		console.log(d);
-		// reduce opacity of all groups
-		d3.selectAll(".myArea").style("opacity", .1);
-		// expect the one that is hovered
-		d3.select("."+d).style("opacity", 1);
+	var highlight = function(countryName) {
+		d3.selectAll(".myArea").style("opacity", .1);	// reduce opacity of all groups
+		//d3.select("."+countryName).style("opacity", 1);
+		d3.selectAll("."+countryName).style("opacity", 1);	// expect the one that is hovered
+		console.log(countryName);
 	}
 
 	// And when it is not hovered anymore
@@ -222,10 +221,14 @@ function drawStackedAreaChart(data,
 		.enter()
 		.append("rect")
 			.attr("x", 400)
-			.attr("y", function(d,i){ return 10 + i*(size+5)}) // 100 is where the first dot appears. 25 is the distance between dots
+			.attr("y", function(d,i){
+				return 10 + i*(size+5);
+			}) // 100 is where the first dot appears. 25 is the distance between dots
 			.attr("width", size)
 			.attr("height", size)
-			.style("fill", function(d){ return color(d)})
+			.style("fill", function(d){
+				return color(d);
+			})
 			.on("mouseover", highlight)
 			.on("mouseleave", noHighlight);
 
