@@ -25,3 +25,10 @@ activate Offline1
 ```
 And then activate the `Offline1` environment for the code.
 
+## Visual of the page is like this-
+
+![Screenshot](./Visual.jpg)
+
+## Report-
+
+Report can be found in [here](./Report.pdf).

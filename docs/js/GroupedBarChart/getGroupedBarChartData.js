@@ -7,7 +7,7 @@ function getCountryIndex(data, countryName) {
 
 function getGroupedBarChartData(data, dataRange, propertyName, maxCountryToKeep = 5) {
     var output = [];
-	for (const [index, country] of dataRange.countries.entries()) {
+	for (const [index, country] of dataRange.countries.sort(() => Math.random() - 0.5).entries()) {
 		var tempData = new Object();
 		tempData.country = country;
 		for (let year = dataRange.year.min.getFullYear(); year < dataRange.year.max.getFullYear()+1; year++) {
@@ -27,7 +27,14 @@ function getGroupedBarChartData(data, dataRange, propertyName, maxCountryToKeep 
 			output[valIndex][item.year] = item[propertyName];
 		}
 	});
-	output.sort(x => x['country']);
+	try {
+		// Try to run this code 
+		output.sort((a, b) => (a.country > b.country) ? 1 : -1);
+	}
+	catch(err) {
+		console.log(err);
+		output.sort((a, b) => (a[propertyName] > b[propertyName]) ? 1 : -1);
+	}
 	return output;
 }
 
