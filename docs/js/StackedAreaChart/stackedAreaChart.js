@@ -1,3 +1,5 @@
+import { getIncrementalColorArray, getRandomColorArray } from './../Color/generateColor.js';
+
 var defaultWidth = 960;
 var defaultHeight = 500;
 var defaultHtmlSelector = "#stacked_area_chart";
@@ -78,12 +80,17 @@ function drawStackedAreaChart(data,
 
 	// List of groups = header of the csv files
 	var categoryList = getCountryList(data);
+	///////////////////////////////////////////////////////////////Color Schema Set - Start
+	//var colorArray = d3.schemeSet3;
+	//var colorArray = getIncrementalColorArray(categoryList.length);
+	var colorArray = getRandomColorArray(categoryList.length);
+	///////////////////////////////////////////////////////////////Color Schema Set - End
 	var maxYValue = getMaxStackedValue(data);	//Should be dynamic
 
 	// color palette
 	var color = d3.scaleOrdinal()
 		.domain(categoryList)
-		.range(d3.schemeSet2);
+		.range(colorArray);
 
 	//stack the data?
 	var stackedData = d3.stack().keys(categoryList)(data);

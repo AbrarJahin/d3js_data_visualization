@@ -1,3 +1,5 @@
+import { getIncrementalColorArray } from './../Color/generateColor.js';
+
 var svgSelector = "#grouped_bar_chart";
 var default_width = 960;
 var default_height = 500;
@@ -6,11 +8,6 @@ var default_height = 500;
 
 function clearDiv(elementSelector) {
     d3.selectAll(elementSelector + ' svg').remove();
-}
-
-function rgbToHex(color) {
-    var r = color.r, g = color.g, b = color.b;
-    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 }
 
 function getYearsFromData(data) {
@@ -30,17 +27,6 @@ function getCountriesFromData(data) {
     });
     countryArray.sort();
     return countryArray;
-}
-
-function getColorArray(noOfElement = 20) {
-    var output = [];
-    var color = d3.scaleLinear().domain([0,noOfElement])
-        .range(['#FF0000', '#0000FF']);
-    for (let step = 0; step < noOfElement; step++) {
-        var colorVal = rgbToHex(d3.color(color(step)));
-        output.push(colorVal);
-    }
-    return output;
 }
 
 function drawBarChartFromData(data, propertyName, htmlSelector = svgSelector, defaultWidth = default_width, defaultHeight = default_height) {
@@ -67,7 +53,7 @@ function drawBarChartFromData(data, propertyName, htmlSelector = svgSelector, de
     //var colorArray = ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"];
     var categories = getYearsFromData(data);
     var countryList = getCountriesFromData(data);
-    var colorArray = getColorArray(categories.length);//==================================================
+    var colorArray = getIncrementalColorArray(categories.length);//==================================================
     var zColorScale = d3.scaleOrdinal()
         .range(colorArray);
     /////////////////////////////////////////////////////////////////////////////////////////////

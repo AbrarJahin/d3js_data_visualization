@@ -1,25 +1,11 @@
+import { getIncrementalColorArray } from './../Color/generateColor.js';
+
 var default_width = 960;
 var default_height = 500;
 var default_html_selector = "#parallel_coordinates_chart";
 
 function clearDiv(elementSelector) {
     d3.selectAll(elementSelector + ' svg').remove();
-}
-
-function rgbToHex(color) {
-    var r = color.r, g = color.g, b = color.b;
-    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-}
-
-function getColorArray(noOfElement = 20, startColor = '#FF0000', endColor = '#0000FF') {
-    var output = [];
-    var color = d3.scaleLinear().domain([0,noOfElement])
-        .range([startColor, endColor]);
-    for (let step = 0; step < noOfElement; step++) {
-        var colorVal = rgbToHex(d3.color(color(step)));
-        output.push(colorVal);
-    }
-    return output;
 }
 
 function getMaxValueOfTheProperty(data, propertyname) {
@@ -77,7 +63,7 @@ function drawParallelCoordinates(data,
 			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 	// Color scale: give me a specie name, I return a color
 	var countries = getBasePropertiesFromData(data, baseProperty);
-	var colorList = getColorArray(countries.length);
+	var colorList = getIncrementalColorArray(countries.length);
 	var color = d3.scaleOrdinal()
 			.domain(countries)
 			.range(colorList);

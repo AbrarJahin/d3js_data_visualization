@@ -20,7 +20,8 @@ function getGroupedBarChartData(data, dataRange, propertyName, maxCountryToKeep 
 	data.forEach((item, index)=> {
 		var valIndex = getCountryIndex(output, item.country);
 		if(valIndex == -1) {
-			console.error(item.country, item.year, "Not Found in range");
+			var message = "Not Found in range - Maybe removed";
+			console.warn(item.country, item.year, message);
 		}
 		else {
 			output[valIndex][item.year] = item[propertyName];
