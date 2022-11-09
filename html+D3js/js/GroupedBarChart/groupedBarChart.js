@@ -1,7 +1,7 @@
 import { getIncrementalColorArray } from './../Color/generateColor.js';
 
 var svgSelector = "#grouped_bar_chart";
-var default_width = 960;
+var default_width = 4960;
 var default_height = 500;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////

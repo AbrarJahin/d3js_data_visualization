@@ -124,7 +124,7 @@ function drawParallelCoordinates(data,
 			.attr("d",  path)
 			.style("fill", "none" )
 			.style("stroke", function(d){ return( color(d[baseProperty]))} )
-			.style("opacity", 0.5)
+			.style("opacity", 0.8)
 			.on("mouseover", highlight)
 			.on("mouseleave", doNotHighlight);
 

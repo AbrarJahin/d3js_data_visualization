@@ -10,7 +10,7 @@ import { StackedAreaData as StackedAreaData } from './StackedAreaChart/stackedAr
 import { drawParallelCoordinates as ParallelCoordinates } from './ParallelCoordinates/parallelCoordinates.js';
 import { getParallelCoordinatesData as ParallelCoordinatesData } from './ParallelCoordinates/getparallelCoordinatesData.js';
 
-var csvLocation = "https://raw.githubusercontent.com/AbrarJahin/d3js_data_visualization/master/docs/data/processed_data.csv";
+var csvLocation = "https://raw.githubusercontent.com/AbrarJahin/d3js_data_visualization/master/html%2BD3js/data/processed_data.csv";
 var downloadedData = null;
 var dataRange = null;
 
